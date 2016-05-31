@@ -1,0 +1,16 @@
+/*
+   BUTTONS
+   ========================================================================== */
+
+.button {
+  display: inline-block;
+  padding: 0.5em 1.5em;
+  text-align: center;
+  text-decoration: none;
+  border-radius: $global-radius;
+  transition: 0.2s all ease;
+
+  &:hover {
+    text-decoration: none;
+  }
+}

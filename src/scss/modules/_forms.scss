@@ -1,0 +1,32 @@
+/*
+   FORMS
+   ========================================================================== */
+
+textarea,
+input {
+  &[type="email"],
+  &[type="submit"],
+  &[type="text"] {
+    width: 100%;
+    padding: 1em;
+    color: $font-color;
+    font-family: $sans;
+    appearance: none;
+    border: 1px solid $border-color;
+    border-radius: $global-radius;
+    box-shadow: inset 0px 1px 3px rgba(0,0,0,0.1);
+    transition: 0.2s ease all;
+  }
+
+  &::placeholder {
+    color: lighten($font-color, 40%);
+  }
+}
+
+input {
+  &[type="email"]:focus,
+  &[type="text"]:focus {
+    border-color: darken($border-color, 20%);
+    outline: 0;
+  }
+}
