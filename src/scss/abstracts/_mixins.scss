@@ -1,0 +1,22 @@
+/* MIXINS */
+
+// Gradient Horizontal
+@mixin horizontal($startColor: #333, $endColor: #888) {
+  background-color: $startColor;
+  background-image: (linear-gradient(left, $startColor, $endColor));
+  background-repeat: repeat-x;
+}
+
+// Gradient Vertical
+@mixin vertical($startColor: #333, $endColor: #888) {
+  background-color: $endColor;
+  background-image: (linear-gradient($startColor, $endColor 20%, $endColor));
+  background-repeat: repeat-x;
+}
+
+// Gradient Directional
+  @mixin directional($startColor: #333, $endColor: #888, $deg: 45deg) {
+  background-color: $startColor;
+  background-image: (linear-gradient($deg, $startColor, $endColor));
+  background-repeat: repeat-x;
+}

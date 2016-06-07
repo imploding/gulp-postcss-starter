@@ -1,19 +1,31 @@
-/* ==========================================================================
-   NEW PROJECT
-   By Matt Thomas (mthomas.com.au) - 2016
-   ========================================================================== */
+/*
+	Happy Plate - 2016
+	By Matt Thomas (mthomas.com.au)
+*/
 
-/* PARTIALS */
-@import "partials/debug";
-@import "partials/normalize";
-@import "partials/variables";
-@import "partials/mixins";
-@import "partials/family";
-@import "partials/base";
+@import "abstracts/mixins";
+@import "abstracts/variables";
+@import "abstracts/tools";
+@import "abstracts/debug";
 
-/* MODULES */
-@import "modules/buttons";
-@import "modules/footer";
-@import "modules/forms";
-@import "modules/header";
-@import "modules/home";
+// @import "vendor/";
+
+@import "base/normalize";
+@import "base/base";
+@import "base/fluidity";
+@import "base/forms";
+@import "base/typography";
+
+@import "layout/header";
+@import "layout/navigation";
+@import "layout/primary";
+@import "layout/wrapper";
+@import "layout/footer";
+
+@import "components/buttons";
+
+@import "pages/home";
+
+// @import "themes/";
+
+// @import "shame"
