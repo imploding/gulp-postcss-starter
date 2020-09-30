@@ -1,0 +1,30 @@
+/* VARIABLES */
+
+:root {    
+  /* Misc */
+  --container-width: 980px;
+  --radius: 4px;
+  
+  /* Colours */
+  --navy:         hsl(227, 100%, 14%);
+  --orange:       hsl(15, 85%, 58%);
+  
+  --font-color:   var(--navy);
+  --link-color:   var(--orange);
+  --border-color: hsla(0, 0%, 0%, 0.25);
+  
+  /* Type */
+  --body: 'San Francisco Text', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --heading: Georgia, Times, serif;
+  --base-font-size: 1.6rem;
+}
+
+/* Breakpoints */
+@custom-media --min-baby (min-width: 480px);
+@custom-media --max-baby (max-width: 480px);
+@custom-media --min-mama (min-width: 800px);
+@custom-media --max-mama (max-width: 800px);
+@custom-media --min-papa (min-width: 1000px);
+@custom-media --max-papa (max-width: 1000px);
+@custom-media --min-mega (min-width: 1200px);
+@custom-media --max-mega (max-width: 1200px);

@@ -1,81 +1,73 @@
 // GULP REQUIRES
-var gulp = require('gulp'),
-    gutil = require('gulp-util'),
-    sass = require('gulp-sass'),
-    pixrem = require('gulp-pixrem'),
-    prefix = require('gulp-autoprefixer'),
-    rename = require('gulp-rename'),
-    cssnano = require('gulp-cssnano'),
-    concat = require('gulp-concat'),
-    uglify = require('gulp-uglify'),
-    path = require("path"),
-    browserSync = require('browser-sync'),
-    reload = browserSync.reload;
+const { src, dest, watch, series, parallel } = require('gulp');
+const browserSync = require('browser-sync').create();
+const postcss = require('gulp-postcss');
+const cssImport = require('postcss-import');
+const cssNested = require('postcss-nested');
+const cssPreset = require('postcss-preset-env');
+const cssAutoprefixer = require('autoprefixer');
+const cssNano = require('cssnano');
+const rename = require('gulp-rename');
+const concat = require('gulp-concat');
 
-// PATHS
-var url = 'aceit.dev';
 
-var base = {
-    src: 'src/',
-    dest: 'public/assets/',
-};
+// CSS
+function css() {
+  var plugins = [
+    cssImport(),
+    cssNested(),
+    cssPreset({stage: 1}),
+    cssAutoprefixer(),
+    // cssNano(),
+  ];
+  return src('src/css/style.css')
+    .pipe(postcss(plugins))
+    .pipe(dest('public/assets/css/'))
+    .pipe(browserSync.stream());
+}
 
-var paths = {
-    templates: 'templates/*.tpl.html',
-    scss: 'scss/**/*.scss',
-    css: 'css/',
-    js: 'js/**/*.js',
-    jsOut: 'js/',
-    img: 'images/**/*',
-    imgOut: 'images/',
-};
 
-// BROWSER SYNC
-gulp.task('browser-sync', function() {
-  browserSync.init({
-    reloadDelay: 50,
-    // server: { baseDir: "~/Repos/express-whs/" } /* static files */
-    proxy: url
-  });
-});
-
-gulp.task('bs-reload', function () {
-  browserSync.reload();
-});
-
-// SASS TASK
-gulp.task('sass', function () {
-  gulp.src(path.join(base.src, paths.scss))
-    .pipe(sass())
-    .on('error', gutil.log)
-    .pipe(pixrem())
-    .pipe(prefix('last 4 versions'))
-    .on('error', gutil.log)
-    .pipe(gulp.dest(path.join(base.dest, paths.css)))
-    .pipe(rename({ suffix: '.min' }))
-    .pipe(cssnano())
-    .pipe(gulp.dest(path.join(base.dest, paths.css)))
-    .pipe(reload({ stream: true }));
-});
-
-// SCRIPTS TASK
-gulp.task('scripts', function() {
-  return gulp.src(path.join(base.src, paths.js))
+// JS
+function js() {
+  return src('src/js/*.js')
     .pipe(concat('main.js'))
-    .on('error', gutil.log)
-    .pipe(gulp.dest(path.join(base.dest, paths.jsOut)))
-    .pipe(rename({suffix: '.min'}))
-    .pipe(uglify())
-    .on('error', gutil.log)
-    .pipe(gulp.dest(path.join(base.dest, paths.jsOut)))
-    .pipe(reload({stream:true}))
-});
+    .pipe(dest('public/assets/js/'))
+    // .pipe(browsersync.reload());
+}
+
+
+// BrowserSync
+function reload(done) {
+  browserSync.reload();
+  done();
+}
 
 // WATCH
-gulp.task('default', ['browser-sync'], function () {
-  gulp.watch(path.join(base.src, paths.scss), ['sass', 'bs-reload']);
-  gulp.watch(path.join(base.src, paths.js), ['scripts', 'bs-reload']);
-  gulp.watch(['public/**/*.html'], ['bs-reload'])
-  // gulp.watch(['craft/templates/**/*.html'], ['bs-reload']); If using Craft CMS
-  // gulp.watch(['craft/templates/**/*.php'], ['bs-reload']);  If using Craft CMS
-});
+function watchFiles(done) {
+  browserSync.init({
+    proxy: 'website.test',
+    reloadDelay: 50,
+    notify: false,
+    open: false
+  });
+  
+  watch("src/css/**/*", css);
+  watch("src/js/**/*", js);
+  watch('templates/**/*', reload);
+  
+  done();
+}
+
+
+// DEFINE COMPLEX TASKS
+const build = parallel(css, js);
+const watching = parallel(watchFiles);
+
+
+// EXPORT TASKS
+exports.css = css;
+exports.js = js;
+exports.reload = reload;
+exports.build = build;
+exports.watch = watching;
+exports.default = watching;
